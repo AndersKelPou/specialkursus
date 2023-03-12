@@ -10,7 +10,7 @@ function generateLambda(maxVariableAmount, maxLength) {
         case 0:
             return variables[Math.round(Math.random() * (maxVariableAmount - 1))];
         case 1:
-            return "(λ." + variables[Math.round(Math.random() * (maxVariableAmount - 1))] + generateLambda(maxVariableAmount, maxLength) + ")";
+            return "(λ" + variables[Math.round(Math.random() * (maxVariableAmount - 1))] + "." + generateLambda(maxVariableAmount, maxLength) + ")";
         case 2:
             return "(" + generateLambda(maxVariableAmount, maxLength-1) + generateLambda(maxVariableAmount, maxLength-1) + ")";
         default:
