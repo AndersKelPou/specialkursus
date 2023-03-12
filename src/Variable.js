@@ -16,7 +16,7 @@ export class Variable extends React.Component {
         return (
         <div className="divElement">
           <label>{this.props.label}</label>
-          <input type="text" className="variable-input" defaultValue={this.props.value} onChange={this.handleChange}/>
+          <input type="number" className="variable-input" defaultValue={this.props.value} onChange={this.handleChange}/>
         </div>
         );
     }
