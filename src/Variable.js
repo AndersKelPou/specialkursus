@@ -14,9 +14,9 @@ export class Variable extends React.Component {
 
     render() {
         return (
-        <div className="divElement">
-          <label>{this.props.label}</label>
-          <input type="number" className="variable-input" defaultValue={this.props.value} onChange={this.handleChange}/>
+        <div className="control">
+          <label className="label">{this.props.label}</label>
+          <input type="number" min={this.props.minValue} placeholder={`${this.props.minValue} to ${this.props.maxValue}`} max={this.props.maxValue} className="input" defaultValue={this.props.value} onChange={this.handleChange}/>
         </div>
         );
     }

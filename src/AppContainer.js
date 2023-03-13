@@ -1,23 +1,42 @@
 import React from "react";
 import "./App.css";
+import 'bulma/css/bulma.css';
 
-var variables = ["x","y","z","a","b","c","d","e","f","g","h","i","j","k"]
+var variables = ["x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
 
-function generateLambda(maxVariableAmount, maxLength) {
-    var select  = 0;
-    (maxLength > 0) ? select=Math.floor(Math.random()*3) : select=Math.round(Math.random());
+function generateLambda(maxVariableAmount, minLength, maxLength) {
+    var select = generateSelect(minLength, maxLength);
+
     switch (select) {
         case 0:
             return variables[Math.round(Math.random() * (maxVariableAmount - 1))];
         case 1:
-            return "(λ" + variables[Math.round(Math.random() * (maxVariableAmount - 1))] + "." + generateLambda(maxVariableAmount, maxLength) + ")";
+
+            return "(λ" 
+            + variables[Math.round(Math.random() * (maxVariableAmount - 1))] 
+            + "." 
+            + generateLambda(maxVariableAmount, minLength - 1, maxLength - 1) 
+            + ")";
+
         case 2:
-            return "(" + generateLambda(maxVariableAmount, maxLength-1) + generateLambda(maxVariableAmount, maxLength-1) + ")";
-        case 3: //In the very rare case that math.random is exactly 1.
-            return generateLambda(maxVariableAmount, maxLength);
+            return "(" 
+            + generateLambda(maxVariableAmount, minLength - 1, maxLength - 1) 
+            + generateLambda(maxVariableAmount, minLength - 1, maxLength - 1) 
+            + ")";
+
         default:
-            alert("Something went wrong");
+            alert("Something is wrong with the select statement.");
             return "";
+    }
+}
+
+function generateSelect(minLength, maxLength) {
+    if (maxLength < 1) return 0;
+    if (minLength > 0) {
+        return Math.round(Math.random() + 1);
+    }
+    if (minLength < 1) {
+        return Math.floor(Math.random() * 3);
     }
 }
 
@@ -28,14 +47,28 @@ export class AppContainer extends React.Component {
     }
 
     handleClick(e) {
-        var vAmount = this.props.maxVariableAmount;
-        var mLength = this.props.maxLength;
-        if(vAmount >= variables.length || vAmount < 1) {
+        var maxVariableAmount = this.props.maxVariableAmount;
+        var minLength = this.props.minLength;
+        var maxLength = this.props.maxLength;
+
+        if(maxVariableAmount > variables.length || maxVariableAmount < 1)
+        {
             alert("Variable amount too high. Please use a number between 1 and " + variables.length);
-        } else if(mLength < 1) {
+
+        } else if(minLength < 1)
+        {
+            alert("Min length must be a positive integer");
+
+        } else if(minLength > maxLength)
+        {
+            alert("Min length must be equal or less than max Length");
+
+        } else if (maxLength < 1)
+        {
             alert("Max length must be a positive integer");
-        }else {
-            var result = generateLambda(vAmount, mLength);
+        } else 
+        {
+            var result = generateLambda(maxVariableAmount, minLength, maxLength);
             this.props.onClick(result);
         }
     }
@@ -43,7 +76,7 @@ export class AppContainer extends React.Component {
     render() {
         return (
             <div className="divElement">
-                <button onClick={this.handleClick} className="element">Generate a lambda term</button>
+                <button className="button is-primary" onClick={this.handleClick}>Generate</button>
             </div>
         );
     }
