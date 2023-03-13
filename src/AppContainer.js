@@ -5,7 +5,7 @@ var variables = ["x","y","z","a","b","c","d","e","f","g","h","i","j","k"]
 
 function generateLambda(maxVariableAmount, maxLength) {
     var select  = 0;
-    (maxLength > 0) ? select=Math.round(Math.random()*2) : select=Math.round(Math.random());
+    (maxLength > 0) ? select=Math.floor(Math.random()*3) : select=Math.round(Math.random());
     switch (select) {
         case 0:
             return variables[Math.round(Math.random() * (maxVariableAmount - 1))];
@@ -13,6 +13,8 @@ function generateLambda(maxVariableAmount, maxLength) {
             return "(λ" + variables[Math.round(Math.random() * (maxVariableAmount - 1))] + "." + generateLambda(maxVariableAmount, maxLength) + ")";
         case 2:
             return "(" + generateLambda(maxVariableAmount, maxLength-1) + generateLambda(maxVariableAmount, maxLength-1) + ")";
+        case 3: //In the very rare case that math.random is exactly 1.
+            return generateLambda(maxVariableAmount, maxLength);
         default:
             alert("Something went wrong");
             return "";
